@@ -27,4 +27,3 @@ class Utilities(object):
             raise Exception(f"Invalid MAC Address! error: {e}")
 
         return str(mac)
-

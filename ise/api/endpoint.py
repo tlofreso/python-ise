@@ -1,7 +1,7 @@
 """ Cisco ISE API Endpoint operations """
 
-from ise.api.http_methods import HttpMethods
 from ise.api.authentication import Authentication
+from ise.api.http_methods import HttpMethods
 from ise.utils import Utilities
 
 

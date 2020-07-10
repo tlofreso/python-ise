@@ -1,13 +1,10 @@
 """ Cisco ISE API Authentication """
 
-import requests
 import json
 import socket
+
+import requests
 import urllib3
-
-
-import pprint as pp
-
 from requests.auth import HTTPBasicAuth
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -66,4 +63,3 @@ class Authentication(object):
         )
 
         return session.text
-
