@@ -2,13 +2,23 @@
 
 from ise.api.http_methods import HttpMethods
 from ise.api.authentication import Authentication
+from ise.utils import Utilities
 
 
 class Endpoint(object):
-    """ Documentation """
+    """ ISE Endpoint and Endpoint Group CRUD operations   
+    
+    """
 
     def __init__(self, session, host, port=9060):
-        """ Documentation """
+        """ Initialize endpoint object session params
+        
+        Args:
+            session (obj): Requests session object
+            host (str): hostname or IP address of ISE
+            port (int): defaults to ERS 9060 port
+        
+        """
 
         self.session = session
         self.host = host
@@ -16,7 +26,18 @@ class Endpoint(object):
         self.base_url = f"https://{self.host}:{self.port}/ers/config/"
 
     def get_endpoint_by_mac(self, mac):
-        """ Documentation """
+        """ Obtain details of an endpoint by the MAC address
+        
+        Args:
+            mac (str): MAC address of the device
+
+        Returns:
+            result (dict): All data associated with a response
+            
+        """
+        print(mac)
+        mac = Utilities.normalize_mac(mac)
+        print(mac)
 
         url = f"{self.base_url}endpoint?filter=mac.EQ.{mac}"
         response = HttpMethods(self.session, url).request("GET")
