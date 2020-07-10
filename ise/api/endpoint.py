@@ -1,6 +1,6 @@
 """ Cisco ISE API Endpoint operations """
 
-from ise.api.authentication import Authentication
+# from ise.api.authentication import Authentication
 from ise.api.http_methods import HttpMethods
 from ise.utils import Utilities
 
@@ -10,7 +10,7 @@ class Endpoint(object):
     
     """
 
-    def __init__(self, session, host, port=9060):
+    def __init__(self, host, user, password, port=9060):
         """ Initialize endpoint object session params
         
         Args:
@@ -20,8 +20,9 @@ class Endpoint(object):
         
         """
 
-        self.session = session
         self.host = host
+        self.user = user
+        self.password = password
         self.port = port
         self.base_url = f"https://{self.host}:{self.port}/ers/config/"
 
@@ -38,7 +39,7 @@ class Endpoint(object):
         mac = Utilities.normalize_mac(mac)
 
         url = f"{self.base_url}endpoint?filter=mac.EQ.{mac}"
-        response = HttpMethods(self.session, url).request("GET")
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def get_endpoint_by_id(self, id):
