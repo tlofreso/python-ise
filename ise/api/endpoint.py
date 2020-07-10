@@ -29,36 +29,58 @@ class Endpoint(object):
         """ Obtain details of an endpoint by the MAC address
         
         Args:
-            mac (str): MAC address of the device
+            mac (str): MAC address of the endpoint
 
         Returns:
-            result (dict): All data associated with a response
+            result (dict): All data associated with a response (Endpoint Details)
             
         """
-        print(mac)
         mac = Utilities.normalize_mac(mac)
-        print(mac)
 
         url = f"{self.base_url}endpoint?filter=mac.EQ.{mac}"
         response = HttpMethods(self.session, url).request("GET")
         return response
 
     def get_endpoint_by_id(self, id):
-        """ Documentation """
+        """ Obtain details of an endpoint by the endpoint ID
+        
+        Args:
+            id (str): Endpoint ID In ISE
+
+        Returns:
+            result (dict): All data associated with a response (Endpoint Details)
+        
+        """
 
         url = f"{self.base_url}endpoint/{id}"
         response = HttpMethods(self.session, url).request("GET")
         return response
 
     def get_endpoint_group_by_name(self, group_name):
-        """ Documentation """
+        """ Obtain details of an endpoint group by the group name
+        
+        Args:
+            name (str): The name of a device group
+
+        Returns:
+            result (dict): All data associated with a response (Endpoint Group Details)
+        
+        """
 
         url = f"{self.base_url}endpointgroup?filter=name.EQ.{group_name}"
         response = HttpMethods(self.session, url).request("GET")
         return response
 
     def get_endpoints_by_groupid(self, group_id):
-        """ Documentation """
+        """ Obtain a dictionary of endpoints by their group ID
+        
+        Args:
+            group_id (str): Endpoint Group ID in ISE
+
+        Returns:
+            result (dict): All data asoociated with a response (endpoints in provided group ID)
+        
+        """
 
         url = f"{self.base_url}endpoint?filter=groupId.EQ.{group_id}"
         response = HttpMethods(self.session, url).request("GET")
