@@ -1,4 +1,5 @@
 import netaddr
+import random
 from netaddr import EUI, mac_unix_expanded
 
 
@@ -35,3 +36,36 @@ class Utilities(object):
         print(my_id)
 
         return my_id
+
+
+class TestingUtilities(object):
+    """ Contains utilities for use with automated testing """
+
+    def generate_macs(number):
+        """ Returns a specified number of random mac addresses 
+            between 00:00:00:00:00:00 & 00:00:00:FF:FF:FF
+
+            Args:
+                number (int): An integer equal to the desired number of generated macs
+        """
+
+        macs = []
+        i = number
+
+        while i > 0:
+            mac = [
+                0x00,
+                0x00,
+                0x00,
+                random.randint(0x00, 0x7F),
+                random.randint(0x00, 0xFF),
+                random.randint(0x00, 0xFF),
+            ]
+
+            new_mac = ":".join(map(lambda x: "%02x" % x, mac))
+            macs.append(new_mac)
+
+            i -= 1
+
+        return macs
+
