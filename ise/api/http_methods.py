@@ -43,7 +43,6 @@ class HttpMethods(object):
                 auth=HTTPBasicAuth(user, password),
                 data=json.dumps(payload),
             )
-            print(response)
 
         except requests.exceptions.ConnectionError as e:
             raise Exception(f"Connection error to {self.url}: {e}")
@@ -81,6 +80,6 @@ class HttpMethods(object):
                 )
             else:
                 raise Exception(print(result))
-                # f"{self.url}: Error {result['status_code']} ({result['status']})"
+                f"{self.url}: Error {result['status_code']} ({result['status']})"
 
         return result

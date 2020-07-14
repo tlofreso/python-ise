@@ -125,8 +125,6 @@ class Endpoint(object):
     ):
         """ Creates a new endpoint in ISE """
 
-        print(profile_name)
-
         mac = Utilities.normalize_mac(mac)
 
         if group_name is None:
@@ -135,7 +133,7 @@ class Endpoint(object):
         else:
             staticGroupAssignment = True
             groupIdPayload = self.get_endpoint_group_by_name(group_name)
-            groupId = groupIdPayload["json"]["SearchResult"]["resources"][0]["id"]
+            groupId = Utilities.get_id(name=groupIdPayload)
 
         if profile_name is None:
             staticProfileAssignment = False
@@ -146,7 +144,7 @@ class Endpoint(object):
             )
             staticProfileAssignment = True
             profileIdPayload = profiler.get_profilerprofile_by_name(profile_name)
-            profileId = profileIdPayload["json"]["SearchResult"]["resources"][0]["id"]
+            profileId = Utilities.get_id(name=profileIdPayload)
 
         if endpoint_name is None:
             endpoint_name = mac
@@ -185,27 +183,103 @@ class Endpoint(object):
             }
         }
 
-        # payload = {
-        #     "ERSEndPoint": {
-        #         "staticProfileAssignment": False,
-        #         "identityStore": "",
-        #         "portalUser": "",
-        #         "mac": mac,
-        #         "staticGroupAssignment": staticGroupAssignment,
-        #         "groupId": groupId,
-        #         "description": description,
-        #         "profileId": "",
-        #     }
-        # }
-
         url = f"{self.base_url}endpoint"
         response = HttpMethods(self, url).request(
             "POST", self.user, self.password, payload
         )
         return response
 
-    def update_endpoint():
-        pass
+    def update_endpoint(
+        self,
+        mac,
+        profile_name=None,
+        group_name=None,
+        endpoint_name=None,
+        description=None,
+    ):
+        """ Updates an existing endpoint """
 
-    def delete_endpoint():
-        pass
+        mac = Utilities.normalize_mac(mac)
+
+        # Gather original endpoint information
+        my_id = self.get_endpoint_by_mac(mac=mac)
+        my_id = Utilities.get_id(my_id)
+        old_attrs = self.get_endpoint_by_id(id=my_id)
+
+        old_name = old_attrs["json"]["ERSEndPoint"]["name"]
+        old_description = old_attrs["json"]["ERSEndPoint"]["description"]
+        old_profileId = old_attrs["json"]["ERSEndPoint"]["profileId"]
+        old_group_assign = old_attrs["json"]["ERSEndPoint"]["staticGroupAssignment"]
+        old_groupId = old_attrs["json"]["ERSEndPoint"]["groupId"]
+
+        if group_name is None and old_group_assign == False:
+            staticGroupAssignment = False
+            groupId = ""
+        elif group_name is None and old_group_assign == True:
+            staticGroupAssignment = True
+            groupId = old_groupId
+        else:
+            staticGroupAssignment = True
+            groupIdPayload = self.get_endpoint_group_by_name(group_name)
+            groupId = Utilities.get_id(name=groupIdPayload)
+
+        if profile_name is None and len(old_profileId) == 0:
+            staticProfileAssignment = False
+            profileId = ""
+        elif profile_name is None and len(old_profileId) > 0:
+            profiler = ProfilerProfile(
+                host=self.host, user=self.user, password=self.password
+            )
+            staticProfileAssignment = True
+            profileId = old_profileId
+        else:
+            profiler = ProfilerProfile(
+                host=self.host, user=self.user, password=self.password
+            )
+            staticProfileAssignment = True
+            profileIdPayload = profiler.get_profilerprofile_by_name(profile_name)
+            profileId = Utilities.get_id(name=profileIdPayload)
+
+        if endpoint_name is None and len(old_name) == 0:
+            endpoint_name = mac
+        elif endpoint_name is None and len(old_name) > 0:
+            enpoint_name = old_name
+
+        payload = {
+            "ERSEndPoint": {
+                "id": my_id,
+                "name": endpoint_name,
+                "description": description,
+                "mac": mac,
+                "profileId": profileId,
+                "staticProfileAssignment": staticProfileAssignment,
+                "groupId": groupId,
+                "staticGroupAssignment": staticGroupAssignment,
+                "portalUser": "",
+                "identityStore": "",
+                "identityStoreId": "",
+                "customAttributes": {
+                    "customAttributes": {"key1": "value1", "key2": "value2"}
+                },
+            }
+        }
+
+        url = f"{self.base_url}endpoint/{my_id}"
+        response = HttpMethods(self, url).request(
+            "PUT", self.user, self.password, payload
+        )
+        return response
+
+    def delete_endpoint(self, mac):
+        """ Removes an endpoint """
+
+        mac = Utilities.normalize_mac(mac)
+
+        # Gather original endpoint information
+        my_id = self.get_endpoint_by_mac(mac=mac)
+        my_id = Utilities.get_id(my_id)
+
+        url = f"{self.base_url}endpoint/{my_id}"
+        response = HttpMethods(self, url).request("DELETE", self.user, self.password)
+        return response
+
