@@ -22,7 +22,7 @@ class HttpMethods(object):
         self.session = session
         self.url = url
 
-    def request(self, method, user, password, headers=None, payload=None):
+    def request(self, method, user, password, payload=None, headers=None):
         """ documentation """
 
         if headers is None:
@@ -41,7 +41,9 @@ class HttpMethods(object):
                 timeout=DEFAULT_TIMEOUT,
                 verify=False,
                 auth=HTTPBasicAuth(user, password),
+                data=json.dumps(payload),
             )
+            print(response)
 
         except requests.exceptions.ConnectionError as e:
             raise Exception(f"Connection error to {self.url}: {e}")
@@ -78,8 +80,7 @@ class HttpMethods(object):
                     f"{self.url}: Error {result['status_code']} ({result['status']}) - {error}: {details}"
                 )
             else:
-                raise Exception(
-                    f"{self.url}: Error {result['status_code']} ({result['status']})"
-                )
+                raise Exception(print(result))
+                # f"{self.url}: Error {result['status_code']} ({result['status']})"
 
         return result
