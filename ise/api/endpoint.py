@@ -112,7 +112,14 @@ class Endpoint(object):
         """
 
         url = f"{self.base_url}endpoint?filter=groupId.EQ.{group_id}"
-        response = HttpMethods(self, url).request("GET")
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
+        return response
+
+    def get_all_endpoint_groups(self):
+        """ Obtains a dictionary of all valid endpoint groups """
+
+        url = f"{self.base_url}endpointgroup"
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def create_endpoint(
