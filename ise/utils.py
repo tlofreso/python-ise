@@ -1,6 +1,10 @@
 import netaddr
 import random
+
 from netaddr import EUI, mac_unix_expanded
+from xml.etree import ElementTree
+from xml.etree.ElementTree import tostring
+from xml.dom import minidom
 
 
 class Utilities(object):
@@ -35,6 +39,11 @@ class Utilities(object):
         my_id = name["json"]["SearchResult"]["resources"][0]["id"]
 
         return my_id
+
+    def prettify(elem):
+        rough_string = ElementTree.tostring(elem, "utf-8")
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toxml()
 
 
 class TestingUtilities(object):

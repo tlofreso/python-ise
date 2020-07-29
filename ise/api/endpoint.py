@@ -1,5 +1,12 @@
 """ Cisco ISE API Endpoint operations """
 
+from xml.etree.ElementTree import Element, SubElement, Comment, tostring, ElementTree
+from xml.etree import ElementTree
+from xml.dom import minidom
+
+from io import BytesIO
+import os
+
 from ise.api.http_methods import HttpMethods
 from ise.utils import Utilities
 from ise.api.profilerprofile import ProfilerProfile
@@ -193,6 +200,67 @@ class Endpoint(object):
         url = f"{self.base_url}endpoint"
         response = HttpMethods(self, url).request(
             "POST", self.user, self.password, payload
+        )
+        return response
+
+    def create_endpoint_bulk(self):
+        """ Creates a batch of endpoints using bulk method """
+
+        root = Element(
+            "ns4:endpointBulkRequest",
+            {
+                "operationType": "create",
+                "resourceMediaType": "vnd.com.cisco.ise.identity.endpoint.1.0+xml",
+                "xmlns:ns6": "sxp.ers.ise.cisco.com",
+                "xmlns:ns5": "trustsec.ers.ise.cisco.com",
+                "xmlns:ns8": "network.ers.ise.cisco.com",
+                "xmlns:ns7": "anc.ers.ise.cisco.com",
+                "xmlns:ers": "ers.ise.cisco.com",
+                "xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xmlns:ns4": "identity.ers.ise.cisco.com",
+            },
+        )
+        parent = SubElement(root, "ns4:resourcesList")
+
+        child = SubElement(parent, "ns4:endpoint", {"description": "My Description"})
+        mac = SubElement(child, "mac")
+        mac.text = "00:00:00:00:00:00"
+
+        mdmAttributes = SubElement(child, "mdmAttributes")
+        mdmComplianceStatus = SubElement(mdmAttributes, "mdmComplianceStatus")
+        mdmEncrypted = SubElement(mdmAttributes, "mdmEncrypted")
+        mdmEnrolled = SubElement(mdmAttributes, "mdmEnrolled")
+        mdmIMEI = SubElement(mdmAttributes, "mdmIMEI")
+        mdmJailBroken = SubElement(mdmAttributes, "mdmJailBroken")
+        mdmManufacturer = SubElement(mdmAttributes, "mdmManufacturer")
+        mdmModel = SubElement(mdmAttributes, "mdmModel")
+        mdmOS = SubElement(mdmAttributes, "mdmOS")
+        mdmPhoneNumber = SubElement(mdmAttributes, "mdmPhoneNumber")
+        mdmPinLock = SubElement(mdmAttributes, "mdmPinLock")
+        mdmReachable = SubElement(mdmAttributes, "mdmReachable")
+        mdmSerial = SubElement(mdmAttributes, "mdmSerial")
+        mdmServerName = SubElement(mdmAttributes, "mdmServerName")
+
+        portalUser = SubElement(child, "portalUser")
+        profileId = SubElement(child, "profileId")
+        staticGroupAssignment = SubElement(child, "staticGroupAssignment")
+        staticProfileAssignment = SubElement(child, "staticProfileAssignment")
+
+        # print(Utilities.prettify(root))
+
+        # print(ElementTree.tostring(root).decode("UTF-8"))
+
+        # payload = ElementTree.tostring(root).decode("UTF-8")
+
+        # payload = Utilities.prettify(root)
+
+        f = open("target.xml", "r")
+        payload = f.read()
+        print(payload)
+
+        url = f"{self.base_url}endpoint/bulk/submit"
+        response = HttpMethods(self, url).request(
+            "PUT", self.user, self.password, payload
         )
         return response
 

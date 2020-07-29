@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:endpointBulkRequest operationType="create" resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns6="sxp.ers.ise.cisco.com" xmlns:ns5="trustsec.ers.ise.cisco.com" xmlns:ns8="network.ers.ise.cisco.com" xmlns:ns7="anc.ers.ise.cisco.com" xmlns:ers="ers.ise.cisco.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns4="identity.ers.ise.cisco.com">
+    <ns4:resourcesList>
+        <ns4:endpoint description="john iphone">
+            <mac>AA:BB:CC:DD:00:00</mac>
+            <mdmAttributes>
+                <mdmComplianceStatus>false</mdmComplianceStatus>
+                <mdmEncrypted>false</mdmEncrypted>
+                <mdmEnrolled>false</mdmEnrolled>
+                <mdmIMEI>IMEI</mdmIMEI>
+                <mdmJailBroken>false</mdmJailBroken>
+                <mdmManufacturer>Apple Inc.</mdmManufacturer>
+                <mdmModel>iPad0</mdmModel>
+                <mdmOS>iOS</mdmOS>
+                <mdmPhoneNumber>Phone Number</mdmPhoneNumber>
+                <mdmPinlock>false</mdmPinlock>
+                <mdmReachable>true</mdmReachable>
+                <mdmSerial>100000000010</mdmSerial>
+                <mdmServerName>MdmServerName</mdmServerName>
+            </mdmAttributes>
+            <portalUser>john_0</portalUser>
+            <profileId></profileId>
+            <staticGroupAssignment>false</staticGroupAssignment>
+            <staticProfileAssignment>false</staticProfileAssignment>
+        </ns4:endpoint>
+        <ns4:endpoint description="john iphone">
+            <mac>AA:BB:CC:DD:00:01</mac>
+            <mdmAttributes>
+                <mdmComplianceStatus>false</mdmComplianceStatus>
+                <mdmEncrypted>false</mdmEncrypted>
+                <mdmEnrolled>false</mdmEnrolled>
+                <mdmIMEI>IMEI</mdmIMEI>
+                <mdmJailBroken>false</mdmJailBroken>
+                <mdmManufacturer>Apple Inc.</mdmManufacturer>
+                <mdmModel>iPad1</mdmModel>
+                <mdmOS>iOS</mdmOS>
+                <mdmPhoneNumber>Phone Number</mdmPhoneNumber>
+                <mdmPinlock>false</mdmPinlock>
+                <mdmReachable>true</mdmReachable>
+                <mdmSerial>100000000011</mdmSerial>
+                <mdmServerName>MdmServerName</mdmServerName>
+            </mdmAttributes>
+            <portalUser>john_1</portalUser>
+            <profileId></profileId>
+            <staticGroupAssignment>false</staticGroupAssignment>
+            <staticProfileAssignment>false</staticProfileAssignment>
+        </ns4:endpoint>
+        <ns4:endpoint description="john iphone">
+            <mac>AA:BB:CC:DD:00:02</mac>
+            <mdmAttributes>
+                <mdmComplianceStatus>false</mdmComplianceStatus>
+                <mdmEncrypted>false</mdmEncrypted>
+                <mdmEnrolled>false</mdmEnrolled>
+                <mdmIMEI>IMEI</mdmIMEI>
+                <mdmJailBroken>false</mdmJailBroken>
+                <mdmManufacturer>Apple Inc.</mdmManufacturer>
+                <mdmModel>iPad2</mdmModel>
+                <mdmOS>iOS</mdmOS>
+                <mdmPhoneNumber>Phone Number</mdmPhoneNumber>
+                <mdmPinlock>false</mdmPinlock>
+                <mdmReachable>true</mdmReachable>
+                <mdmSerial>100000000012</mdmSerial>
+                <mdmServerName>MdmServerName</mdmServerName>
+            </mdmAttributes>
+            <portalUser>john_2</portalUser>
+            <profileId></profileId>
+            <staticGroupAssignment>false</staticGroupAssignment>
+            <staticProfileAssignment>false</staticProfileAssignment>
+        </ns4:endpoint>
+        <ns4:endpoint description="john iphone">
+            <mac>AA:BB:CC:DD:00:03</mac>
+            <mdmAttributes>
+                <mdmComplianceStatus>false</mdmComplianceStatus>
+                <mdmEncrypted>false</mdmEncrypted>
+                <mdmEnrolled>false</mdmEnrolled>
+                <mdmIMEI>IMEI</mdmIMEI>
+                <mdmJailBroken>false</mdmJailBroken>
+                <mdmManufacturer>Apple Inc.</mdmManufacturer>
+                <mdmModel>iPad3</mdmModel>
+                <mdmOS>iOS</mdmOS>
+                <mdmPhoneNumber>Phone Number</mdmPhoneNumber>
+                <mdmPinlock>false</mdmPinlock>
+                <mdmReachable>true</mdmReachable>
+                <mdmSerial>100000000013</mdmSerial>
+                <mdmServerName>MdmServerName</mdmServerName>
+            </mdmAttributes>
+            <portalUser>john_3</portalUser>
+            <profileId></profileId>
+            <staticGroupAssignment>false</staticGroupAssignment>
+            <staticProfileAssignment>false</staticProfileAssignment>
+        </ns4:endpoint>
+        <ns4:endpoint description="john iphone">
+            <mac>AA:BB:CC:DD:00:04</mac>
+            <mdmAttributes>
+                <mdmComplianceStatus>false</mdmComplianceStatus>
+                <mdmEncrypted>false</mdmEncrypted>
+                <mdmEnrolled>false</mdmEnrolled>
+                <mdmIMEI>IMEI</mdmIMEI>
+                <mdmJailBroken>false</mdmJailBroken>
+                <mdmManufacturer>Apple Inc.</mdmManufacturer>
+                <mdmModel>iPad4</mdmModel>
+                <mdmOS>iOS</mdmOS>
+                <mdmPhoneNumber>Phone Number</mdmPhoneNumber>
+                <mdmPinlock>false</mdmPinlock>
+                <mdmReachable>true</mdmReachable>
+                <mdmSerial>100000000014</mdmSerial>
+                <mdmServerName>MdmServerName</mdmServerName>
+            </mdmAttributes>
+            <portalUser>john_4</portalUser>
+            <profileId></profileId>
+            <staticGroupAssignment>false</staticGroupAssignment>
+            <staticProfileAssignment>false</staticProfileAssignment>
+        </ns4:endpoint>
+    </ns4:resourcesList>
+</ns4:endpointBulkRequest>
