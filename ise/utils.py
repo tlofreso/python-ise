@@ -149,3 +149,18 @@ class TestingUtilities(object):
 
         return endpoints
 
+
+class Validators(object):
+    """ Validates input to ERS Operation methods """
+
+    def check_anc_policy_actions(values):
+        print(values)
+        print(type(values))
+        if type(values) is not list:
+            raise TypeError()
+
+        for value in values:
+            if value not in ("QUARANTINE", "PORTBOUNCE", "SHUTDOWN"):
+                raise ValueError()
+        else:
+            return values

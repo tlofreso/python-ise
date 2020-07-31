@@ -6,8 +6,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 DEFAULT_HEADERS = {
-    "Content-type": "vnd.com.cisco.ise.identity.endpoint.1.0+xml",
-    "Accept": "vnd.com.cisco.ise.identity.endpoint.1.0+xml",
+    "Content-type": "application/json",
+    "Accept": "application/json",
 }
 DEFAULT_TIMEOUT = 5
 VALID_SUCCESS_CODES = [200, 201, 202, 204]

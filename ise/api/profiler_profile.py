@@ -1,4 +1,4 @@
-""" Cisco ISE API Profiler Profile Operations """
+""" Cisco ISE ERS API Profiler Profile Operations """
 
 from ise.api.http_methods import HttpMethods
 
