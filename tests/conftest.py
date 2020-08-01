@@ -80,3 +80,26 @@ def test_connection_anc_endpoints():
     connection = ANCEndpoint(host, user=un, password=pw)
 
     return connection
+
+
+@pytest.fixture
+def test_connection_anc_policy():
+    import json
+    import os
+
+    import urllib3
+
+    from ise.api.anc_policy import ANCPolicy
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    with open("config.json") as f:
+        config = json.load(f)
+
+    host = config["ERS_HOST"]
+    un = config["ERS_USER"]
+    pw = config["ERS_PASS"]
+
+    connection = ANCPolicy(host, user=un, password=pw)
+
+    return connection
