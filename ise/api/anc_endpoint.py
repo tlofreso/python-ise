@@ -2,6 +2,8 @@
 
 from ise.api.http_methods import HttpMethods
 
+from ise.utils import Utilities
+
 
 class ANCEndpoint(object):
     """ ISE ANC Endpoint Operations """
@@ -26,37 +28,30 @@ class ANCEndpoint(object):
         """ Obtains an ANC Ednpoint by id """
 
         url = f"{self.base_url}ancendpoint/{id}"
-        response = HttpMethods(self, url).request(
-            "PUT", self.user, self.password, payload
-        )
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
-    def anc_endpoint_clear(self, mac=None, ip=None):
+    def anc_endpoint_clear(self, mac):
         """ Clears an ANC Endpoint Policy from an ANC Endpoint """
 
-        if mac is None and ip is None:
-            response = "No IP or MAC Address specified!"
+        mac = Utilities.normalize_mac(mac)
 
         payload = {
             "OperationAdditionalData": {
-                "additionalData": [
-                    {"name": "macAddress", "value": mac},
-                    {"name": "ipAddress", "value": ip},
-                ]
+                "additionalData": [{"name": "macAddress", "value": mac},]
             }
         }
 
-        url = f"{self.base_url}ancendpoint/apply"
+        url = f"{self.base_url}ancendpoint/clear"
         response = HttpMethods(self, url).request(
             "PUT", self.user, self.password, payload
         )
         return response
 
-    def anc_endpoint_apply(self, policy, mac=None, ip=None):
+    def anc_endpoint_apply(self, policy, mac):
         """ Applies an ANC Endpoint Policy to an ANC Endpoint """
 
-        if mac is None and ip is None:
-            response = "No IP or MAC Address specified!"
+        mac = Utilities.normalize_mac(mac)
 
         payload = {
             "OperationAdditionalData": {

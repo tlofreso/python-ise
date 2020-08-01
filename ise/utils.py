@@ -154,8 +154,6 @@ class Validators(object):
     """ Validates input to ERS Operation methods """
 
     def check_anc_policy_actions(values):
-        print(values)
-        print(type(values))
         if type(values) is not list:
             raise TypeError()
 

@@ -12,6 +12,50 @@ from ise.utils import Utilities
 from ise.api.profiler_profile import ProfilerProfile
 
 
+class EndpointGroup(object):
+    """ ISE Endpoint Group CRUD operations   
+    
+    """
+
+    def __init__(self, host, user, password, port=9060):
+        """ Initialize endpoint object session params
+        
+        Args:
+            session (obj): Requests session object
+            host (str): hostname or IP address of ISE
+            port (int): defaults to ERS 9060 port
+        
+        """
+
+        self.host = host
+        self.user = user
+        self.password = password
+        self.port = port
+        self.base_url = f"https://{self.host}:{self.port}/ers/config/endpointgroup"
+
+    def get_endpoint_group_by_name(self, group_name):
+        """ Obtain details of an endpoint group by the group name
+        
+        Args:
+            name (str): The name of a device group
+
+        Returns:
+            result (dict): All data associated with a response (Endpoint Group Details)
+        
+        """
+
+        url = f"{self.base_url}?filter=name.EQ.{group_name}"
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
+        return response
+
+    def get_all_endpoint_groups(self):
+        """ Obtains a dictionary of all valid endpoint groups """
+
+        url = f"{self.base_url}"
+        response = HttpMethods(self, url).request("GET", self.user, self.password)
+        return response
+
+
 class Endpoint(object):
     """ ISE Endpoint and Endpoint Group CRUD operations   
     
@@ -31,7 +75,7 @@ class Endpoint(object):
         self.user = user
         self.password = password
         self.port = port
-        self.base_url = f"https://{self.host}:{self.port}/ers/config/"
+        self.base_url = f"https://{self.host}:{self.port}/ers/config/endpoint"
 
     def get_endpoint_by_mac(self, mac):
         """ Obtain details of an endpoint by the MAC address
@@ -45,14 +89,14 @@ class Endpoint(object):
         """
         mac = Utilities.normalize_mac(mac)
 
-        url = f"{self.base_url}endpoint?filter=mac.EQ.{mac}"
+        url = f"{self.base_url}?filter=mac.EQ.{mac}"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def get_endpoint_by_name(self, name):
         """ Obtain details of an endpoint by the endpoint name """
 
-        url = f"{self.base_url}endpoint/name/{name}"
+        url = f"{self.base_url}/name/{name}"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
@@ -67,43 +111,28 @@ class Endpoint(object):
         
         """
 
-        url = f"{self.base_url}endpoint/{id}"
+        url = f"{self.base_url}/{id}"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def get_rejected_endpoints(self):
         """ Obtains all rejected endpoints """
 
-        url = f"{self.base_url}endpoint/getrejectedendpoints"
+        url = f"{self.base_url}/getrejectedendpoints"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def get_all_endpoints(self):
         """ Obtains all endpoints """
 
-        url = f"{self.base_url}endpoint"
+        url = f"{self.base_url}"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
     def get_endpoint_version_info(self):
         """ Obtains version information for ERS API (endpoint) """
 
-        url = f"{self.base_url}endpoint/versioninfo"
-        response = HttpMethods(self, url).request("GET", self.user, self.password)
-        return response
-
-    def get_endpoint_group_by_name(self, group_name):
-        """ Obtain details of an endpoint group by the group name
-        
-        Args:
-            name (str): The name of a device group
-
-        Returns:
-            result (dict): All data associated with a response (Endpoint Group Details)
-        
-        """
-
-        url = f"{self.base_url}endpointgroup?filter=name.EQ.{group_name}"
+        url = f"{self.base_url}/versioninfo"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
@@ -118,14 +147,7 @@ class Endpoint(object):
         
         """
 
-        url = f"{self.base_url}endpoint?filter=groupId.EQ.{group_id}"
-        response = HttpMethods(self, url).request("GET", self.user, self.password)
-        return response
-
-    def get_all_endpoint_groups(self):
-        """ Obtains a dictionary of all valid endpoint groups """
-
-        url = f"{self.base_url}endpointgroup"
+        url = f"{self.base_url}?filter=groupId.EQ.{group_id}"
         response = HttpMethods(self, url).request("GET", self.user, self.password)
         return response
 
@@ -145,8 +167,11 @@ class Endpoint(object):
             staticGroupAssignment = False
             groupId = ""
         else:
+            grouper = EndpointGroup(
+                host=self.host, user=self.user, password=self.password
+            )
             staticGroupAssignment = True
-            groupIdPayload = self.get_endpoint_group_by_name(group_name)
+            groupIdPayload = grouper.get_endpoint_group_by_name(group_name)
             groupId = Utilities.get_id(name=groupIdPayload)
 
         if profile_name is None:
@@ -197,7 +222,7 @@ class Endpoint(object):
             }
         }
 
-        url = f"{self.base_url}endpoint"
+        url = f"{self.base_url}"
         response = HttpMethods(self, url).request(
             "POST", self.user, self.password, payload
         )
@@ -233,8 +258,11 @@ class Endpoint(object):
             staticGroupAssignment = True
             groupId = old_groupId
         else:
+            grouper = EndpointGroup(
+                host=self.host, user=self.user, password=self.password
+            )
             staticGroupAssignment = True
-            groupIdPayload = self.get_endpoint_group_by_name(group_name)
+            groupIdPayload = grouper.get_endpoint_group_by_name(group_name)
             groupId = Utilities.get_id(name=groupIdPayload)
 
         if profile_name is None and len(old_profileId) == 0:
@@ -278,7 +306,7 @@ class Endpoint(object):
             }
         }
 
-        url = f"{self.base_url}endpoint/{my_id}"
+        url = f"{self.base_url}/{my_id}"
         response = HttpMethods(self, url).request(
             "PUT", self.user, self.password, payload
         )
@@ -293,7 +321,7 @@ class Endpoint(object):
         my_id = self.get_endpoint_by_mac(mac=mac)
         my_id = Utilities.get_id(my_id)
 
-        url = f"{self.base_url}endpoint/{my_id}"
+        url = f"{self.base_url}/{my_id}"
         response = HttpMethods(self, url).request("DELETE", self.user, self.password)
         return response
 
@@ -356,7 +384,7 @@ class EndpointBulk(object):
         payload = f.read()
         print(payload)
 
-        url = f"{self.base_url}endpoint/bulk/submit"
+        url = f"{self.base_url}/bulk/submit"
         response = HttpMethods(self, url).request(
             "PUT", self.user, self.password, payload
         )
