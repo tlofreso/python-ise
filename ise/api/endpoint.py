@@ -205,7 +205,6 @@ class Endpoint(object):
                     "customAttributes": {"key1": "value1", "key2": "value2"}
                 },
                 "mdmAttributes": {
-                    "mdmServerName": "",
                     "mdmReachable": False,
                     "mdmEnrolled": False,
                     "mdmComplianceStatus": False,
@@ -329,6 +328,24 @@ class Endpoint(object):
 class EndpointBulk(object):
     """ ISE Endpoint and Endpoint Group Bulk CRUD operations """
 
+    def __init__(self, host, user, password, port=9060):
+        """ Initialize endpoint object session params
+        
+        Args:
+            session (obj): Requests session object
+            host (str): hostname or IP address of ISE
+            port (int): defaults to ERS 9060 port
+        
+        """
+
+        self.host = host
+        self.user = user
+        self.password = password
+        self.port = port
+        self.base_url = (
+            f"https://{self.host}:{self.port}/ers/config/endpoint/bulk/submit"
+        )
+
     def create_endpoint_bulk(self):
         """ Creates a batch of endpoints using bulk method """
 
@@ -352,41 +369,37 @@ class EndpointBulk(object):
         mac = SubElement(child, "mac")
         mac.text = "00:00:00:00:00:00"
 
-        mdmAttributes = SubElement(child, "mdmAttributes")
-        mdmComplianceStatus = SubElement(mdmAttributes, "mdmComplianceStatus")
-        mdmEncrypted = SubElement(mdmAttributes, "mdmEncrypted")
-        mdmEnrolled = SubElement(mdmAttributes, "mdmEnrolled")
-        mdmIMEI = SubElement(mdmAttributes, "mdmIMEI")
-        mdmJailBroken = SubElement(mdmAttributes, "mdmJailBroken")
-        mdmManufacturer = SubElement(mdmAttributes, "mdmManufacturer")
-        mdmModel = SubElement(mdmAttributes, "mdmModel")
-        mdmOS = SubElement(mdmAttributes, "mdmOS")
-        mdmPhoneNumber = SubElement(mdmAttributes, "mdmPhoneNumber")
-        mdmPinLock = SubElement(mdmAttributes, "mdmPinLock")
-        mdmReachable = SubElement(mdmAttributes, "mdmReachable")
-        mdmSerial = SubElement(mdmAttributes, "mdmSerial")
-        mdmServerName = SubElement(mdmAttributes, "mdmServerName")
+        # mdmAttributes = SubElement(child, "mdmAttributes")
+        # mdmComplianceStatus = SubElement(mdmAttributes, "mdmComplianceStatus")
+        # mdmEncrypted = SubElement(mdmAttributes, "mdmEncrypted")
+        # mdmEnrolled = SubElement(mdmAttributes, "mdmEnrolled")
+        # mdmIMEI = SubElement(mdmAttributes, "mdmIMEI")
+        # mdmJailBroken = SubElement(mdmAttributes, "mdmJailBroken")
+        # mdmManufacturer = SubElement(mdmAttributes, "mdmManufacturer")
+        # mdmModel = SubElement(mdmAttributes, "mdmModel")
+        # mdmOS = SubElement(mdmAttributes, "mdmOS")
+        # mdmPhoneNumber = SubElement(mdmAttributes, "mdmPhoneNumber")
+        # mdmPinLock = SubElement(mdmAttributes, "mdmPinLock")
+        # mdmReachable = SubElement(mdmAttributes, "mdmReachable")
+        # mdmSerial = SubElement(mdmAttributes, "mdmSerial")
 
         portalUser = SubElement(child, "portalUser")
+        portalUser.text = "MyPortalUser"
         profileId = SubElement(child, "profileId")
         staticGroupAssignment = SubElement(child, "staticGroupAssignment")
+        staticGroupAssignment.text = "false"
         staticProfileAssignment = SubElement(child, "staticProfileAssignment")
+        staticProfileAssignment.text = "false"
 
-        # print(Utilities.prettify(root))
-
-        # print(ElementTree.tostring(root).decode("UTF-8"))
-
-        # payload = ElementTree.tostring(root).decode("UTF-8")
-
-        # payload = Utilities.prettify(root)
-
-        f = open("target.xml", "r")
-        payload = f.read()
+        payload = ElementTree.tostring(root, method="html")
         print(payload)
 
-        url = f"{self.base_url}/bulk/submit"
+        url = f"{self.base_url}"
         response = HttpMethods(self, url).request(
-            "PUT", self.user, self.password, payload
+            "PUT",
+            self.user,
+            self.password,
+            payload,
+            headers={"Content-Type": "application/xml"},
         )
         return response
-        pass

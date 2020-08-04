@@ -40,9 +40,9 @@ class ANCPolicy(object):
     def update_anc_policy(self, id, actions):
         """ Updates a given ANC Policy """
 
-        Validators.check_anc_policy_actions(values=actions)
+        Validators.check_anc_policy_actions(value=actions)
 
-        payload = {"ErsAncPolicy": {"name": id, "actions": actions}}
+        payload = {"ErsAncPolicy": {"name": id, "actions": [actions]}}
 
         url = f"{self.base_url}ancpolicy/{id}"
         response = HttpMethods(self, url).request(
@@ -59,9 +59,9 @@ class ANCPolicy(object):
 
     def create_anc_policy(self, name, actions):
 
-        Validators.check_anc_policy_actions(values=actions)
+        Validators.check_anc_policy_actions(value=actions)
 
-        payload = {"ErsAncPolicy": {"name": name, "actions": actions}}
+        payload = {"ErsAncPolicy": {"name": name, "actions": [actions]}}
 
         url = f"{self.base_url}ancpolicy"
         response = HttpMethods(self, url).request(

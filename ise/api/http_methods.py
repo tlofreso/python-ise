@@ -32,9 +32,12 @@ class HttpMethods(object):
             headers = DEFAULT_HEADERS
         result = {}
         error = None
-        data = None
         details = None
         result_json = None
+        if headers == {"Content-Type": "application/xml"}:
+            data = payload
+        else:
+            data = json.dumps(payload)
 
         try:
             response = requests.request(
@@ -44,7 +47,7 @@ class HttpMethods(object):
                 timeout=DEFAULT_TIMEOUT,
                 verify=False,
                 auth=HTTPBasicAuth(user, password),
-                data=json.dumps(payload),
+                data=data,
             )
 
         except requests.exceptions.ConnectionError as e:
